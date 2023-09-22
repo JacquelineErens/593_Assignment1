@@ -69,7 +69,7 @@ world_data  <- readr::read_csv("../data/World.csv")
 kenya_data  <- readr::read_csv("../data/Kenya.csv")
 
 # This should be changed from SwedenData to sweden_data to be consistent with Snake Case (following first two)
-sweden_data  <- readr::read_csv("../data/Sweden.csv")
+sweden_data <- readr::read_csv("../data/Sweden.csv")
 ```
 
 <!-- The `read_csv` function from the package `readr` -->
@@ -123,8 +123,8 @@ We begin by computing *crude birth rate* (CBR) for a given
 
 ```{r calculate total person years}
 # Create new variable py = total person years for each data set. Add spaces between operators. I chose to add extra for alignment, unclear if that helps or not
-world_data$py <-  world_data$py.men +  world_data$py.women
-kenya_data$py <-  kenya_data$py.men +  kenya_data$py.women
+world_data$py  <-  world_data$py.men +  world_data$py.women
+kenya_data$py  <-  kenya_data$py.men +  kenya_data$py.women
 sweden_data$py <- sweden_data$py.men + sweden_data$py.women
 ```
 
@@ -133,7 +133,7 @@ sweden_data$py <- sweden_data$py.men + sweden_data$py.women
 <!-- on different sets of data, **consider** creating a function -->
 <!-- instead of repeating the code for each piece of data. -->
 
-Write reusable function to calculate CBR
+Write reusable function to calculate CBR.
 
 ```{r CBR function}
 # Function to compute the Crude Birth Rate (CBR). Spaces added to separate pipes, removed from between function and (). populationData converted to Snake Case for formatting.
@@ -163,7 +163,7 @@ With some minor changes to formatting of variable names (sweden_data) getting ca
 
 The CBR is higher for kenya than Sweden at both time periods. 
 The rate for Sweden is lower than the world rate, while Kenya's rate is higher, for both time periods
-The rate dips a bit for everyone in the second period compared to the first
+The rate dips a bit for everyone in the second period compared to the first.
   
 ## Question 2
   
@@ -193,7 +193,7 @@ The CBR is easy to understand but contains both men and women
 
 ### Answer 2
 
-Write a reusable function to compute ASFR
+Write a reusable function to compute ASFR.
 
 ```{r reusable asfr function}
 # Function to compute Age specific fertility rate (ASFR), some spacing was modified to conform with guidelines
@@ -203,7 +203,7 @@ compute_asfr <- function(pop_data) {
 }
 ```
 
-Compute the values for the world & countries
+Compute the values for the world & countries.
 
 ```{r compute asfr}
 # Compute ASFR for each data set
@@ -212,7 +212,7 @@ kenya_data  <- compute_asfr(kenya_data)
 sweden_data <- compute_asfr(sweden_data)
 ```
 
-Display data for Kenya and Sweden to compare rates
+Display data for Kenya and Sweden to compare rates.
 
 ```{r display asfr}
 # Compare ASFRs for Kenya and Sweden
@@ -267,7 +267,7 @@ Using the ASFR, we can define the TFR as the average number of
 
 ### Answer 3
 
-Create the reusable function to calculate TFR
+Create the reusable function to calculate TFR.
 
 ```{r create function to compute TFR}
 # Function to compute the total fertility rate (TFR)
@@ -279,7 +279,7 @@ compute_tfr <- function(population_data) {
 }
 ```
 
-Apply it to the data frames (separately)
+Apply it to the data frames (separately).
 
 ```{r use function to compute TFR}
 # Compute the TFR for each data set
@@ -288,14 +288,14 @@ Apply it to the data frames (separately)
 (sweden_tfr <- compute_tfr(sweden_data))
 ```
 
-Divide the value in row 2 by the value in row 1 (total births by total women) to get this ratio
+Divide the value in row 2 by the value in row 1 (total births by total women) to get this ratio.
 
 ```{r calculate changes}
 # Compute totals of women and births in the world by period
 (
 world_data %>% 
   group_by(period) %>% 
-  summarise(total_women = sum(py.women),
+  summarise(total_women  = sum(py.women),
             total_births = sum(births)) 
 -> totals_world
 )
@@ -324,7 +324,7 @@ Next, we will examine another important demographic process:
   $$
   Briefly describe patterns you observe in the resulting CDRs.
 
-Reusable function to calculate CDR
+Reusable function to calculate CDR.
 
 ```{r}
 # Function to compute the Crude death rate (CDR)
@@ -336,7 +336,7 @@ compute_cdr <- function(population_data) {
 }
 ```
 
-Compute the CDRs for each data set and dispay
+Compute the CDRs for each data set and dispay.
 
 ```{r}
 # Compute the CDR for each data set
@@ -369,7 +369,7 @@ One puzzling finding from the previous question is that the CDR
   pattern you observe.
  
 
-Write reusable function to compute ASDR
+Write reusable function to compute ASDR.
 
 ```{r}
 # Function to compute Age specific death rate (ASDR). Indents fixed and population_data name used. Spaced out around operators
@@ -379,7 +379,7 @@ compute_asdr <- function(population_data) {
 }
 ```
 
-Apply reusable function, add () around call to observe in output
+Apply reusable function, add () around call to observe in output.
 
 ```{r}
 # Compute ASDR for each data set. Sweden variable renamed.
@@ -394,15 +394,15 @@ Maybe make ratios to compare them to each other?
 
 ```{r}
 # Output vector of ratios making the comparisons to make observations
-kenya_data$asdr / world_data$asdr
+kenya_data$asdr  / world_data$asdr
 
 sweden_data$asdr / world_data$asdr
 
-kenya_data$asdr / sweden_data$asdr
+kenya_data$asdr  / sweden_data$asdr
 ```
 This wasn't as helpful as I thought, but I think the last one is what we want (comparing Kenya to Sweden).
 
-Kenya's Age Specific Death Rate is often higher by either a slight bit or a great deal from Sweden's. But the value above 0 suggests it is always larger.
+Kenya's Age Specific Death Rate is often higher by either a slight bit or a great deal from Sweden's. But the value above 1 suggests it is always larger.
 
 ## Question 6
 
@@ -440,16 +440,16 @@ compute_pop_prop <- function(population_data) {
 }
 ```
 
-Next, apply that function to each dataset and assign it
+Next, apply that function to each dataset and assign it.
 
 ```{r}
 # Compute population proportion for each data set. Spaces before assignment. Add () to display output
-(world_data <- compute_pop_prop(world_data))
-(kenya_data <- compute_pop_prop(kenya_data))
+(world_data  <- compute_pop_prop(world_data))
+(kenya_data  <- compute_pop_prop(kenya_data))
 (sweden_data <- compute_pop_prop(sweden_data))
 ```
 
-Now use the population proportions to calculate CDR
+Now use the population proportions to calculate CDR.
 
 ```{r}
 # Compute Kenyas CDR Kenya had Sweden's population distribution. Sweden data renamed, don't understand where "re" comes from in cdr_re_sweden. Relative to? Should we rename?
@@ -458,4 +458,5 @@ mutate(kenya_data,
   group_by(period) %>%
   summarise(cdr_re_sweden = sum(temp_cdr))
 ```
+
 In comparisons to Sweden, the first period is about the same, the second period is double the rate.
